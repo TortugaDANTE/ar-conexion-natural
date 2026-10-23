@@ -65,7 +65,7 @@ AFRAME.registerComponent('conexion',{
   this.voltear(c,true);
   if(!e.primera){e.primera=c;return;}
   const a=e.primera;e.primera=null;e.movs++;
-  if(a.id===c.id){a.par=c.par=true;const sp=this.sPar||1.15;setTimeout(()=>anim(260,k=>{const v=1+(sp-1)*ease(k),z=(this.zB||0.04)+0.05*(this.K||1)*ease(k);a.g.scale.setScalar(v);c.g.scale.setScalar(v);a.g.position.z=c.g.position.z=z;}),330);e.pares++;e.racha++;const pts=100+50*(e.racha-1);e.puntos+=pts;
+  if(a.id===c.id){a.par=c.par=true;e.pares++;e.racha++;const pts=100+50*(e.racha-1);e.puntos+=pts;
    const nuevo=PROG.add(c.id);if(nuevo)this.nuevos.add(c.id);this.actualizarPines();
    [a,c].forEach(x=>{x.brillo.material.opacity=.85;anim(900,k=>{x.brillo.material.opacity=.85*(1-k)+.25*k;});});
    e.bloqueo=true;setTimeout(()=>{e.bloqueo=false;this.panelEspecie(byId(c.id),{par:true,pts,nuevo});},420);
