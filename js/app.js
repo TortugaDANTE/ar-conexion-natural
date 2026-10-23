@@ -190,7 +190,7 @@ AFRAME.registerComponent('conexion',{
 
 /* ---------- UI HTML compartida ---------- */
 const UI=window.UI={nivel:localStorage.getItem('cnNivel')||'facil',
- init(){const nv=$('#niveles');nv.innerHTML='';for(const k in NIVELES){const N=NIVELES[k],b=document.createElement('button');b.innerHTML=`${N.nombre}<small style="display:block;font-size:11px;font-weight:500">${N.c}×${N.r} · ${N.c*N.r/2} pares</small>`;
+ init(){const nv=$('#niveles');nv.innerHTML='';for(const k in NIVELES){const N=NIVELES[k],b=document.createElement('button');b.innerHTML=`${N.nombre}<small style="display:block;font-size:clamp(7.9px,min(2.54vw,1.17vh),9.9px);font-weight:500">${N.c}×${N.r} · ${N.c*N.r/2} pares</small>`;
    b.className=k===this.nivel?'sel':'';b.onclick=()=>{this.nivel=k;localStorage.setItem('cnNivel',k);[...nv.children].forEach(x=>x.classList.toggle('sel',x===b));};nv.appendChild(b);}
   $('#portada').src=window.PORTADA;this.progreso(PROG.get().length,ESP().length);
   $('#bReset').onclick=()=>{if(confirm('¿Borrar las especies desbloqueadas en el Mapa de SLP?')){PROG.reset();CN.pines&&CN.pines.forEach(p=>p.estado=null);CN.actualizarPines();this.progreso(0,ESP().length);}};
