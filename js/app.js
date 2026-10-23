@@ -44,7 +44,7 @@ AFRAME.registerComponent('conexion',{
   const AR=!!document.querySelector('[mindar-image]'),K=AR?3:1;this.K=K;this.zB=AR?0.19:0.04;/* RA: cartas 3x respecto al ancla */
   const asp=399/300,maxW=1.2*K,maxH=1.6*K,gap=0.025*K;
   const cw=Math.min((maxW-gap*(N.c-1))/N.c,((maxH-gap*(N.r-1))/N.r)/asp),ch=cw*asp;
-  this.cartas=[];this.sPar=Math.min(1.15,1+0.95*gap/Math.max(cw,ch));
+  this.cartas=[];this.sPar=2*Math.min(1.15,1+0.95*gap/Math.max(cw,ch));
   mazo.forEach((id,i)=>{const col=i%N.c,row=Math.floor(i/N.c);
    const g=new th.Group();g.position.set((col-(N.c-1)/2)*(cw+gap),((N.r-1)/2-row)*(ch+gap),this.zB);
    const rev=new th.Mesh(new th.PlaneGeometry(cw,ch),new th.MeshBasicMaterial({map:this.texRev}));
@@ -65,7 +65,7 @@ AFRAME.registerComponent('conexion',{
   this.voltear(c,true);
   if(!e.primera){e.primera=c;return;}
   const a=e.primera;e.primera=null;e.movs++;
-  if(a.id===c.id){a.par=c.par=true;const sp=this.sPar||1.15;setTimeout(()=>anim(260,k=>{const v=1+(sp-1)*ease(k);a.g.scale.setScalar(v);c.g.scale.setScalar(v);}),330);e.pares++;e.racha++;const pts=100+50*(e.racha-1);e.puntos+=pts;
+  if(a.id===c.id){a.par=c.par=true;const sp=this.sPar||1.15;setTimeout(()=>anim(260,k=>{const v=1+(sp-1)*ease(k),z=(this.zB||0.04)+0.05*(this.K||1)*ease(k);a.g.scale.setScalar(v);c.g.scale.setScalar(v);a.g.position.z=c.g.position.z=z;}),330);e.pares++;e.racha++;const pts=100+50*(e.racha-1);e.puntos+=pts;
    const nuevo=PROG.add(c.id);if(nuevo)this.nuevos.add(c.id);this.actualizarPines();
    [a,c].forEach(x=>{x.brillo.material.opacity=.85;anim(900,k=>{x.brillo.material.opacity=.85*(1-k)+.25*k;});});
    e.bloqueo=true;setTimeout(()=>{e.bloqueo=false;this.panelEspecie(byId(c.id),{par:true,pts,nuevo});},420);
@@ -107,7 +107,7 @@ AFRAME.registerComponent('conexion',{
  /* ---------- MAPA DE SLP ---------- */
  async construirMapa(){
   const th=this.th,G=await (await fetch('data/regiones_geo.json')).json();this.G=G;
-  const tilt=new th.Group();tilt.rotation.x=Math.PI/2-0.45;tilt.position.set(0,0.02,0.16);this.gMapa.add(tilt);
+  const tilt=new th.Group();tilt.rotation.x=Math.PI/2-0.45;tilt.position.set(0,0.02,0.16);if(document.querySelector('[mindar-image]'))tilt.scale.setScalar(3);/* RA: mapa 3x respecto al ancla */this.gMapa.add(tilt);
   this.giro=new th.Group();tilt.add(this.giro);this.tilt=tilt;
   const base=new th.Mesh(new th.CircleGeometry(0.66,64),new th.MeshBasicMaterial({color:0x5AE0F0,transparent:true,opacity:.12,depthWrite:false,side:th.DoubleSide}));base.rotation.x=-Math.PI/2;base.position.y=-0.005;
   const aro=new th.Mesh(new th.TorusGeometry(0.66,0.005,8,96),new th.MeshBasicMaterial({color:0x5AE0F0,transparent:true,opacity:.8}));aro.rotation.x=Math.PI/2;
