@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Visor · Conexión Natural · Agenda Ambiental UASLP</title><link rel="stylesheet" href="css/estilos.css">
+<script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+<script src="js/cartas.js"></script><script src="js/portada.js"></script><script src="js/datos.js"></script><script src="js/app.js"></script></head><body>
+<style>body{background:radial-gradient(circle at 50% 40%,#123d6b,#0E2240 70%)}</style>
+<div class="barra"><span class="idlogos"><img src="assets/logos/logo_uaslp_blanco.svg" alt="UASLP"><img src="assets/logos/logo_aa_blanco.svg" alt="Agenda Ambiental UASLP"></span><span>Conexión Natural</span></div>
+<div id="menu" class="capa"><div class="logos"><span class="idlogos"><img src="assets/logos/logo_uaslp_blanco.svg" alt="UASLP"><img src="assets/logos/logo_aa_blanco.svg" alt="Agenda Ambiental UASLP"></span></div>
+<h1><span>BIODIVERSIDAD POTOSINA · AGENDA AMBIENTAL UASLP</span>Conexión Natural</h1>
+<img id="portada" class="portada" alt="Lona promocional Conexión Natural">
+<div class="reglas"><b>Memorama de aves, insectos, plantas y árboles de San Luis Potosí.</b><ol>
+<li>Toca <b>dos cartas</b> para voltearlas.</li><li>Si forman <b>par</b>, se quedan descubiertas, ganas puntos y la especie se <b>desbloquea en el Mapa de SLP</b>.</li>
+<li>Si no, se vuelven a voltear: ¡recuerda dónde estaban!</li><li>Encuentra todos los pares con menos movimientos y en menos tiempo.</li></ol></div>
+<b style="font-size:14px;color:#5AE0F0">ELIGE EL TAMAÑO DEL TABLERO</b><div id="niveles"></div>
+<button class="grande" id="bVisor" onclick="UI.iniciar()">▶ Jugar (sin cámara)</button><button class="sec" onclick="UI.iniciar('mapa')">🗺 Ver Mapa de SLP</button><button class="sec" onclick="location.href='index.html'">Jugar con cámara (RA)</button>
+<p class="progreso">🗺 Especies desbloqueadas en el Mapa de SLP: <b class="nDes">0/30</b> <button class="mini" id="bReset">Reiniciar progreso</button></p>
+<p class="nota">Material del memorama "Conexión Natural" · Agenda Ambiental UASLP · ext. 7200 y 7210</p></div>
+<div id="juegoUI" class="oculto"><div id="hud"></div><div id="ayuda" class="ayuda"></div>
+<div id="barraVista"><button id="vJuego">🃏 Memorama</button><button id="vMapa">🗺 Mapa de SLP<small class="nDes">0/30</small></button><button id="vNueva">↺ Nueva<small>partida</small></button></div></div>
+<div id="resumen" class="capa oculto"><div class="cont"></div></div>
+<a-scene embedded style="position:fixed;inset:0" renderer="colorManagement: true; antialias: true; alpha: true" vr-mode-ui="enabled: false" background="color: #0E2240">
+ <a-entity light="type: ambient; intensity: 0.9"></a-entity><a-entity light="type: directional; intensity: 1.1" position="0.6 1.5 1.2"></a-entity>
+ <a-camera position="0 0 2.3" look-controls="enabled: false" wasd-controls="enabled: false"></a-camera>
+ <a-entity id="raiz" conexion position="0 -0.05 0"></a-entity></a-scene>
+<script>/* encuadre: el tablero (≈1.2 × 1.5) cabe en pantalla en vertical y horizontal */
+function encuadre(){const cam=document.querySelector('a-camera');if(!cam)return;const a=innerWidth/innerHeight,v=80*Math.PI/360,h=Math.atan(Math.tan(v)*a);
+ cam.object3D.position.z=Math.max(0.78/Math.tan(v),0.64/Math.tan(h))+0.15;}
+addEventListener('resize',encuadre);document.querySelector('a-scene').addEventListener('loaded',encuadre);setTimeout(encuadre,500);setTimeout(encuadre,2000);</script>
+</body></html>
