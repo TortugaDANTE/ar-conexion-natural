@@ -50,7 +50,7 @@ AFRAME.registerComponent('conexion',{
    const rev=new th.Mesh(new th.PlaneGeometry(cw,ch),new th.MeshBasicMaterial({map:this.texRev}));
    const fr=new th.Mesh(new th.PlaneGeometry(cw,ch),new th.MeshBasicMaterial({map:this.texDe(id)}));fr.rotation.y=Math.PI;fr.position.z=-0.001;
    const hit=new th.Mesh(new th.PlaneGeometry(cw+gap,ch+gap),new th.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false,side:th.DoubleSide}));hit.position.z=0.002;
-   const brillo=new th.Mesh(new th.PlaneGeometry(cw*1.12,ch*1.08),new th.MeshBasicMaterial({color:0x5AE0F0,transparent:true,opacity:0,depthWrite:false}));brillo.position.z=-0.004;
+   const brillo=new th.Mesh(new th.PlaneGeometry(cw+gap*0.8,ch+gap*0.8),new th.MeshBasicMaterial({color:0x5AE0F0,transparent:true,opacity:0,depthWrite:false}));brillo.position.z=0.004;/* detrás de la cara cuando la carta está volteada; no rebasa el hueco */
    g.add(brillo,rev,fr,hit);this.gJuego.add(g);
    const c={id,g,brillo,vuelta:false,par:false,i};hit.userData.carta=true;this.agregarClic(hit,()=>this.tocarCarta(c));this.cartas.push(c);
    g.scale.setScalar(0.01);setTimeout(()=>anim(380,k=>g.scale.setScalar(Math.max(.01,back(k)))),i*25);});
