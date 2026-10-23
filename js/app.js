@@ -41,12 +41,12 @@ AFRAME.registerComponent('conexion',{
   this.gJuego.clear();this.clic=this.clic.filter(m=>!m.userData.carta);this.cerrarPanel(true);
   const pares=N.c*N.r/2,ids=ESP().map(e=>e.id).sort(()=>Math.random()-.5).slice(0,pares);
   const mazo=ids.concat(ids).sort(()=>Math.random()-.5);
-  const AR=!!document.querySelector('[mindar-image]'),K=AR?3:1;this.K=K;/* RA: cartas 3x respecto al ancla */
+  const AR=!!document.querySelector('[mindar-image]'),K=AR?3:1;this.K=K;this.zB=AR?0.19:0.04;/* RA: cartas 3x respecto al ancla */
   const asp=399/300,maxW=1.2*K,maxH=1.6*K,gap=0.025*K;
   const cw=Math.min((maxW-gap*(N.c-1))/N.c,((maxH-gap*(N.r-1))/N.r)/asp),ch=cw*asp;
-  this.cartas=[];
+  this.cartas=[];this.sPar=Math.min(1.15,1+0.95*gap/Math.max(cw,ch));
   mazo.forEach((id,i)=>{const col=i%N.c,row=Math.floor(i/N.c);
-   const g=new th.Group();g.position.set((col-(N.c-1)/2)*(cw+gap),((N.r-1)/2-row)*(ch+gap),0.04);
+   const g=new th.Group();g.position.set((col-(N.c-1)/2)*(cw+gap),((N.r-1)/2-row)*(ch+gap),this.zB);
    const rev=new th.Mesh(new th.PlaneGeometry(cw,ch),new th.MeshBasicMaterial({map:this.texRev}));
    const fr=new th.Mesh(new th.PlaneGeometry(cw,ch),new th.MeshBasicMaterial({map:this.texDe(id)}));fr.rotation.y=Math.PI;fr.position.z=-0.001;
    const hit=new th.Mesh(new th.PlaneGeometry(cw+gap,ch+gap),new th.MeshBasicMaterial({transparent:true,opacity:0,depthWrite:false,side:th.DoubleSide}));hit.position.z=0.002;
@@ -59,13 +59,13 @@ AFRAME.registerComponent('conexion',{
  },
  tiempo(){const e=this.est;if(!e)return 0;return e.tAcum+(e.t0&&!this.pausa?(performance.now()-e.t0):0);},
  voltear(c,arriba,ms=320){c.vuelta=arriba;const g=c.g,r0=g.rotation.y,r1=arriba?Math.PI:0;
-  anim(ms,k=>{const e=ease(k);g.rotation.y=r0+(r1-r0)*e;g.position.z=0.04+Math.sin(Math.PI*k)*0.08*(this.K||1);});},
+  anim(ms,k=>{const e=ease(k);g.rotation.y=r0+(r1-r0)*e;g.position.z=(this.zB||0.04)+Math.sin(Math.PI*k)*0.08*(this.K||1);});},
  tocarCarta(c){const e=this.est;if(!e||e.fin||e.bloqueo||c.vuelta||c.par)return;
   if(!e.t0)e.t0=performance.now();
   this.voltear(c,true);
   if(!e.primera){e.primera=c;return;}
   const a=e.primera;e.primera=null;e.movs++;
-  if(a.id===c.id){a.par=c.par=true;e.pares++;e.racha++;const pts=100+50*(e.racha-1);e.puntos+=pts;
+  if(a.id===c.id){a.par=c.par=true;const sp=this.sPar||1.15;setTimeout(()=>anim(260,k=>{const v=1+(sp-1)*ease(k);a.g.scale.setScalar(v);c.g.scale.setScalar(v);}),330);e.pares++;e.racha++;const pts=100+50*(e.racha-1);e.puntos+=pts;
    const nuevo=PROG.add(c.id);if(nuevo)this.nuevos.add(c.id);this.actualizarPines();
    [a,c].forEach(x=>{x.brillo.material.opacity=.85;anim(900,k=>{x.brillo.material.opacity=.85*(1-k)+.25*k;});});
    e.bloqueo=true;setTimeout(()=>{e.bloqueo=false;this.panelEspecie(byId(c.id),{par:true,pts,nuevo});},420);
