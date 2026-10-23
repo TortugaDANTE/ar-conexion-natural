@@ -41,7 +41,8 @@ AFRAME.registerComponent('conexion',{
   this.gJuego.clear();this.clic=this.clic.filter(m=>!m.userData.carta);this.cerrarPanel(true);
   const pares=N.c*N.r/2,ids=ESP().map(e=>e.id).sort(()=>Math.random()-.5).slice(0,pares);
   const mazo=ids.concat(ids).sort(()=>Math.random()-.5);
-  const asp=399/300,maxW=1.2,maxH=1.6,gap=0.025;
+  const AR=!!document.querySelector('[mindar-image]'),K=AR?3:1;this.K=K;/* RA: cartas 3x respecto al ancla */
+  const asp=399/300,maxW=1.2*K,maxH=1.6*K,gap=0.025*K;
   const cw=Math.min((maxW-gap*(N.c-1))/N.c,((maxH-gap*(N.r-1))/N.r)/asp),ch=cw*asp;
   this.cartas=[];
   mazo.forEach((id,i)=>{const col=i%N.c,row=Math.floor(i/N.c);
@@ -58,7 +59,7 @@ AFRAME.registerComponent('conexion',{
  },
  tiempo(){const e=this.est;if(!e)return 0;return e.tAcum+(e.t0&&!this.pausa?(performance.now()-e.t0):0);},
  voltear(c,arriba,ms=320){c.vuelta=arriba;const g=c.g,r0=g.rotation.y,r1=arriba?Math.PI:0;
-  anim(ms,k=>{const e=ease(k);g.rotation.y=r0+(r1-r0)*e;g.position.z=0.04+Math.sin(Math.PI*k)*0.08;});},
+  anim(ms,k=>{const e=ease(k);g.rotation.y=r0+(r1-r0)*e;g.position.z=0.04+Math.sin(Math.PI*k)*0.08*(this.K||1);});},
  tocarCarta(c){const e=this.est;if(!e||e.fin||e.bloqueo||c.vuelta||c.par)return;
   if(!e.t0)e.t0=performance.now();
   this.voltear(c,true);
