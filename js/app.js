@@ -90,7 +90,7 @@ AFRAME.registerComponent('conexion',{
   if(sp.regiones.length===4)chip('Todo el estado (4 regiones)','#003B71',x,y);else if(!sp.regiones.length)chip('[POR DEFINIR]','rgba(160,30,45,.9)',x,y);else sp.regiones.forEach(r=>x=chip(RG()[r].nombre,RG()[r].color,x,y));
   c.textAlign='center';c.fillStyle='#5AE0F0';c.font=`600 32px ${FONT}`;
   c.fillText(op.par?(op.nuevo?'🔓 ¡Nueva especie desbloqueada en el Mapa de SLP!':'Ya estaba desbloqueada en el Mapa de SLP')+' · Toca para seguir':'Toca para cerrar',W/2,H-50);
-  this.abrirPanel(plano(cv,0.95),()=>{if(this.est&&this.est.fin&&this.vista==='juego')this.fin();});
+  this.abrirPanel(plano(cv,0.95*((this.K||1)>1?2:1)),()=>{if(this.est&&this.est.fin&&this.vista==='juego')this.fin();});
  },
  panelTexto(titulo,lineas,col,w=0.9){const W=1100,cv=lienzo(W,10),c0=cv.getContext('2d');c0.font=`500 40px ${FONT}`;
   const L=[];lineas.forEach(l=>{if(l.h){L.push(l)}else wrap(c0,l,W-130).forEach(t=>L.push({t}));});
